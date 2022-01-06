@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VideoApp.Models;
 
-namespace VideoApp.CustomerService
+namespace VideoApp.Services
 {
     public interface ICustomerService
     {

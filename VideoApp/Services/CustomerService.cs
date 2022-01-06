@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using VideoApp.DBContexts;
 using VideoApp.Models;
+using VideoApp.DBContexts;
 
-namespace VideoApp.CustomerService
+namespace VideoApp.Services
 {
     public class CustomerService : ICustomerService
     {
