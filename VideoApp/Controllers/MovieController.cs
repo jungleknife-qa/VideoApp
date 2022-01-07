@@ -22,7 +22,7 @@ namespace VideoApp.Controllers
 
         [HttpGet]
         [Route("[action]")]
-        [Route("api/Movie/GetMovie")]
+        [Route("api/Movie/GetMovies")]
         public IEnumerable<Movie> GetMovies()
         {
             return _movieService.GetMovies();

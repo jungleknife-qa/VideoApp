@@ -10,7 +10,7 @@ namespace VideoApp.Services
     {
         Rental AddRental(Rental rental);
 
-        List<Rental> GetRental();
+        List<Rental> GetRentals();
 
         void UpdateRental(Rental rental);
 

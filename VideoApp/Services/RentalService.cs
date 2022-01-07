@@ -20,7 +20,7 @@ namespace VideoApp.Services
             _myDbContext.SaveChanges();
             return rental;
         }
-        public List<Rental> GetRental()
+        public List<Rental> GetRentals()
         {
             return _myDbContext.Rentals.ToList();
         }

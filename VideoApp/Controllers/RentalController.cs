@@ -1,5 +1,6 @@
 ﻿using VideoApp.DBContexts;
 using VideoApp.Models;
+using VideoApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,17 +14,57 @@ namespace VideoApp.Controllers
     [ApiController]
     public class RentalController : ControllerBase
     {
-        private MyDBContext myDbContext;
-
-        public RentalController(MyDBContext context)
+        private readonly IRentalService _rentalService;
+        public RentalController(IRentalService rentalService)
         {
-            myDbContext = context;
+            _rentalService = rentalService;
         }
 
         [HttpGet]
-        public IList<Rental> Get()
+        [Route("[action]")]
+        [Route("api/Rental/GetRentals")]
+        public IEnumerable<Rental> GetRentals()
         {
-            return (this.myDbContext.Rentals.ToList());
+            return _rentalService.GetRentals();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Rental/AddRental")]
+        public IActionResult AddRental(Rental rental)
+        {
+            _rentalService.AddRental(rental);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Rental/UpdateRental")]
+        public IActionResult UpdateRental(Rental rental)
+        {
+            _rentalService.UpdateRental(rental);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("[action]")]
+        [Route("api/Rental/DeleteRental")]
+        public IActionResult DeleteRental(int id)
+        {
+            var existingRental = _rentalService.GetRental(id);
+            if (existingRental != null)
+            {
+                _rentalService.DeleteRental(existingRental.Id);
+                return Ok();
+            }
+            return NotFound($"Rental Not Found with ID : {existingRental.Id}");
+        }
+
+        [HttpGet]
+        [Route("GetRental")]
+        public Rental GetRental(int id)
+        {
+            return _rentalService.GetRental(id);
         }
     }
 }
