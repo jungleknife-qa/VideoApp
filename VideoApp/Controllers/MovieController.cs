@@ -1,5 +1,6 @@
 ﻿using VideoApp.DBContexts;
 using VideoApp.Models;
+using VideoApp.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
@@ -13,17 +14,57 @@ namespace VideoApp.Controllers
     [ApiController]
     public class MovieController : ControllerBase
     {
-        private MyDBContext myDbContext;
-
-        public MovieController(MyDBContext context)
+        private readonly IMovieService _movieService;
+        public MovieController(IMovieService movieService)
         {
-            myDbContext = context;
+            _movieService = movieService;
         }
 
         [HttpGet]
-        public IList<Movie> Get()
+        [Route("[action]")]
+        [Route("api/Movie/GetMovie")]
+        public IEnumerable<Movie> GetMovies()
         {
-            return (this.myDbContext.Movies.ToList());
+            return _movieService.GetMovies();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Movie/AddMovie")]
+        public IActionResult AddMovie(Movie movie)
+        {
+            _movieService.AddMovie(movie);
+            return Ok();
+        }
+
+        [HttpPost]
+        [Route("[action]")]
+        [Route("api/Movie/UpdateMovie")]
+        public IActionResult UpdateMovie(Movie movie)
+        {
+            _movieService.UpdateMovie(movie);
+            return Ok();
+        }
+
+        [HttpDelete]
+        [Route("[action]")]
+        [Route("api/Movie/DeleteMovie")]
+        public IActionResult DeleteMovie(int id)
+        {
+            var existingMovie = _movieService.GetMovie(id);
+            if (existingMovie != null)
+            {
+                _movieService.DeleteMovie(existingMovie.Id);
+                return Ok();
+            }
+            return NotFound($"Movie Not Found with ID : {existingMovie.Id}");
+        }
+
+        [HttpGet]
+        [Route("GetMovie")]
+        public Movie GetMovie(int id)
+        {
+            return _movieService.GetMovie(id);
         }
     }
 }
